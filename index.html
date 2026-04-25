@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>零岚服务器 · 纯净生存社区</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #ffffff;
+            color: #1e2a2f;
+            line-height: 1.5;
+        }
+
+        /* 主视觉 - 极简无装饰 */
+        .hero {
+            text-align: center;
+            padding: 2.8rem 1.5rem 2rem;
+            background: #fefefe;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c4c3b;
+            letter-spacing: -0.2px;
+            margin-bottom: 0.6rem;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: #6f8577;
+            border-top: 1px solid #eef2ef;
+            display: inline-block;
+            padding-top: 0.7rem;
+        }
+
+        /* 信息卡片网格 — 手机端和电脑端都保持两列并排 */
+        .info-grid {
+            max-width: 1000px;
+            margin: 2rem auto 0.5rem;
+            padding: 0 1.2rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+
+        /* 在极小屏幕下（宽度小于480px）适当缩小间距和内边距 */
+        @media (max-width: 480px) {
+            .info-grid {
+                gap: 0.8rem;
+                padding: 0 1rem;
+            }
+            .info-card {
+                padding: 0.9rem 0.8rem;
+            }
+        }
+
+        .info-card {
+            background: #fafcfb;
+            border-radius: 24px;
+            padding: 1.2rem 1rem;
+            border: 1px solid #e6ede8;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .info-card:hover {
+            border-color: #cfe3d8;
+            background: #ffffff;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
+        }
+
+        .info-icon {
+            font-size: 1.7rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8aa79a;
+            font-weight: 500;
+        }
+
+        /* 服务器地址样式：IP和端口分成两行 */
+        .info-value-ip {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 0.4rem;
+            color: #2a5e4a;
+            background: #f0f5f2;
+            padding: 0.3rem 0.6rem;
+            border-radius: 60px;
+            display: inline-block;
+            word-break: break-all;
+            max-width: 100%;
+        }
+
+        .info-value-port {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 0.2rem;
+            color: #2a5e4a;
+            background: #f0f5f2;
+            padding: 0.3rem 0.6rem;
+            border-radius: 60px;
+            display: inline-block;
+            word-break: break-all;
+            max-width: 100%;
+        }
+
+        .info-value-single {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 0.4rem;
+            color: #2a5e4a;
+            background: #f0f5f2;
+            padding: 0.3rem 0.6rem;
+            border-radius: 60px;
+            display: inline-block;
+            word-break: break-all;
+            max-width: 100%;
+        }
+
+        /* 加群链接样式 */
+        .qq-link-wrapper {
+            margin-top: 8px;
+        }
+        .qq-link {
+            font-size: 0.7rem;
+            color: #6a8f7a;
+            text-decoration: none;
+            background: #eef3ef;
+            padding: 4px 12px;
+            border-radius: 30px;
+            display: inline-block;
+            transition: 0.2s;
+        }
+        .qq-link:hover {
+            background: #e2ece4;
+            transform: translateY(-1px);
+        }
+
+        /* 公告区域 */
+        .card-section {
+            max-width: 1000px;
+            margin: 2rem auto 3rem;
+            padding: 0 1.2rem;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c4c3b;
+        }
+
+        /* 公告卡片列表 */
+        .announcement-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.3rem 1.5rem 1rem 1.5rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid #eef3ef;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            /* 顶部装饰线 — 避免空白 */
+            border-top: 2px solid #e4eee8;
+        }
+
+        .announcement-card:hover {
+            border-color: #cbded2;
+            background: #fefefe;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-summary {
+            color: #3b5c4e;
+            font-size: 0.94rem;
+            margin-bottom: 1rem;
+            line-height: 1.55;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.2rem;
+        }
+
+        .card-date {
+            font-size: 0.72rem;
+            color: #6f8b7a;
+            background: #f2f8f4;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 450;
+        }
+
+        /* 弹窗样式 — 右上角关闭 + 85vh 高度 + max-width 560px */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            max-width: 560px;
+            width: 90%;
+            height: 85vh;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.2s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 1rem 1.2rem 0.4rem;
+            border-bottom: 1px solid #edf4ef;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.7rem;
+            cursor: pointer;
+            color: #8daa9a;
+            line-height: 1;
+            padding: 0 0.5rem;
+            transition: 0.2s;
+            border-radius: 40px;
+        }
+
+        .close-modal:hover {
+            color: #2c5e46;
+            background: #f0f6f2;
+        }
+
+        .modal-date {
+            font-size: 0.75rem;
+            color: #558c70;
+            margin: 0.8rem 1.5rem 0.5rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid #e9f0ec;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.2rem 1.5rem 1.8rem;
+            line-height: 1.65;
+            font-size: 0.96rem;
+            color: #2b4238;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* 社交链接 - 仅保留B站，无图标 */
+        .social-links {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 0.8rem 0 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.6rem;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: #f8faf8;
+            padding: 0.6rem 1.8rem;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid #e2ebe5;
+            font-size: 0.9rem;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .bili-icon {
+            background: #fb7299;
+            border: none;
+            color: white;
+        }
+
+        .bili-icon:hover {
+            background: #ff88aa;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            .info-value-ip, .info-value-port, .info-value-single {
+                font-size: 0.82rem;
+                padding: 0.25rem 0.5rem;
+            }
+            .info-icon {
+                font-size: 1.4rem;
+            }
+            .info-label {
+                font-size: 0.65rem;
+            }
+            .announcement-card {
+                padding: 1.1rem 1.2rem;
+            }
+            .card-summary {
+                font-size: 0.88rem;
+            }
+            .social-icon {
+                padding: 0.45rem 1.4rem;
+                font-size: 0.85rem;
+            }
+            .modal-content {
+                width: 92%;
+            }
+            .modal-body {
+                padding: 0.2rem 1.2rem 1.5rem;
+            }
+            .qq-link {
+                font-size: 0.65rem;
+                padding: 3px 10px;
+            }
+        }
+
+        /* 极小屏幕确保卡片内容不溢出 */
+        @media (max-width: 380px) {
+            .info-value-ip, .info-value-port, .info-value-single {
+                font-size: 0.75rem;
+                word-break: break-all;
+            }
+            .info-card {
+                padding: 0.8rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <h1>欢迎来到零岚服务器</h1>
+        <p>纯净 · 生存 · 友好社区</p>
+    </section>
+
+    <!-- 信息卡片：两列并排（手机+电脑始终两列）无复制按钮 -->
+    <div class="info-grid">
+        <div class="info-card">
+            <div class="info-icon">🎮</div>
+            <div class="info-label">服务器地址</div>
+            <div class="info-value-ip">IP: linlan.9666.fun</div>
+            <div class="info-value-port">端口: 38573</div>
+        </div>
+        <div class="info-card">
+            <div class="info-icon">💬</div>
+            <div class="info-label">QQ群</div>
+            <div class="info-value-single">470734343</div>
+            <div class="qq-link-wrapper">
+                <a href="https://qm.qq.com/q/SgzcSPgwiQ" target="_blank" class="qq-link">➕ 加群直达</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 公告区域 -->
+    <div class="card-section">
+        <div class="section-title">服务器公告</div>
+        <div id="announcementList"></div>
+
+        <!-- 底部社交按钮 - 仅保留B站，无图标 -->
+        <div class="social-links">
+            <a class="social-icon bili-icon" href="https://space.bilibili.com/3537115835009702" target="_blank" rel="noopener noreferrer">
+                b站
+            </a>
+        </div>
+    </div>
+
+    <!-- 弹窗 (右上角X关闭，整卡触发展示详情) -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" id="closeModalBtn">✕</button>
+            </div>
+            <div class="modal-date" id="modalDate"></div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // ---------- 公告数据（完全保留原始正文内容）----------
+        const announcementsData = [
+            {
+                date: "2026年3月14日",
+                summary: "为了促进服务器发展，或者是说为了拯救服务器，经管理组深度考虑，决定使用新的菜单插件，更换后领地和传送点等等数据都会被删除，取而代之的是更好的，更新的功能，但是存档不会被清除。如果由于此事而导致损失，可以找管理或者腐竹进行补偿。维护时间：大概持续到今天（3月14日）晚上。感谢您的支持，祝你在更新后游玩愉快！！！",
+                fullContent: "为了促进服务器发展，或者是说为了拯救服务器，经管理组深度考虑，决定使用新的菜单插件，更换后领地和传送点等等数据都会被删除，取而代之的是更好的，更新的功能，但是存档不会被清除。如果由于此事而导致损失，可以找管理或者腐竹进行补偿。\n\n维护时间：大概持续到今天（3月14日）晚上\n\n感谢您的支持，祝你在更新后游玩愉快！！！"
+            },
+            {
+                date: "2026年3月3日",
+                summary: "招管理员！！！人数：数名，需要很会指令的。有此意向的人，请跟腐竹私信。被选上的会有14天试用期，过了之后就可以成为正式管理员。",
+                fullContent: "招管理员！！！\n\n人数：数名\n需要很会指令的\n有此意向的人，请跟腐竹私信\n\n被选上的会有14天试用期，过了之后就可以成为正式管理员"
+            },
+            {
+                date: "2026年2月27日",
+                summary: "零岚服务器与文曙暮光服务器合作！！！文曙暮光服务器QQ交流群：1083037876，文曙暮光服务器官方B站号：一個慕白默，文曙暮光服务器游戏版本：26.0。请大家多多支持",
+                fullContent: "零岚服务器与文曙暮光服务器合作！！！\n\n文曙暮光服务器QQ交流群：1083037876\n文曙暮光服务器官方B站号：一個慕白默\n文曙暮光服务器游戏版本：26.0\n\n请大家多多支持"
+            },
+            {
+                date: "2026年2月26日",
+                summary: "新手请看这里！！！版本26.0及以上，26.2及以下。IP地址:linlan.9666.fun，端口：38573，睡觉比例为20%，死亡不掉落为开启，正版验证为关闭，生物破坏开启，可开矿透，种子是20260212，服务器是有领地插件的，可以传送。进群请把自己的昵称设置成游戏昵称，腐竹邮箱：AiYuan4047@outlook.com",
+                fullContent: "新手请看这里！！！\n\n版本26.0及以上，26.2及以下\nIP地址:linlan.9666.fun\n端口：38573\n睡觉比例为20%\n死亡不掉落为开启\n正版验证为关闭\n生物破坏开启\n可开矿透\n种子是20260212\n服务器是有领地插件的，可以传送\n\n进群请把自己的昵称设置成游戏昵称\n腐竹邮箱：AiYuan4047@outlook.com"
+            },
+            {
+                date: "2026年2月15日",
+                summary: "服务器不允许刷物品（比如使用搬务带和漏斗造成游戏bug，区块刷物品等）(生电机器不算)，否则封号5天，扣除所有金币，并且清除所有刷的物品和被刷的物品。",
+                fullContent: "服务器不允许刷物品（比如使用搬务带和漏斗造成游戏bug，区块刷物品等）(生电机器不算)，否则封号5天，扣除所有金币，并且清除所有刷的物品和被刷的物品。"
+            }
+        ];
+
+        // 截取摘要辅助（超100字加...）
+        function formatSummary(text) {
+            if (!text) return '';
+            let trimmed = text.trim();
+            if (trimmed.length > 100) {
+                return trimmed.substring(0, 100) + '...';
+            }
+            return trimmed;
+        }
+
+        // 渲染公告卡片 (整卡可点击，无额外“查看详情”文字)
+        function renderAnnouncements() {
+            const container = document.getElementById('announcementList');
+            if (!container) return;
+            container.innerHTML = '';
+            announcementsData.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = 'announcement-card';
+                // 摘要显示，保留换行符转成 <br>，并进行安全转义
+                let summaryRaw = formatSummary(item.summary);
+                let summaryHtml = escapeHtmlForSummary(summaryRaw).replace(/\n/g, '<br>');
+                card.innerHTML = `
+                    <div class="card-summary">${summaryHtml}</div>
+                    <div class="card-footer">
+                        <span class="card-date">${escapeHtml(item.date)}</span>
+                    </div>
+                `;
+                // 整卡点击打开弹窗
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openModal(item.date, item.fullContent);
+                });
+                container.appendChild(card);
+            });
+        }
+
+        // 防止XSS同时对summary里的html标签做安全处理但保留<br>
+        function escapeHtmlForSummary(str) {
+            if (!str) return '';
+            // 先转义所有<>&
+            let escaped = str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+            // 将合法的换行标记转换回去（因为summary中原本没有<br>，但为防止后续手动加入）
+            escaped = escaped.replace(/&lt;br&gt;/g, '<br>');
+            return escaped;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            }).replace(/\n/g, '<br>');
+        }
+
+        // 弹窗逻辑（右上角X关闭 & 点击遮罩关闭）
+        const modal = document.getElementById('modal');
+        const modalDateEl = document.getElementById('modalDate');
+        const modalBodyEl = document.getElementById('modalBody');
+        let isModalOpen = false;
+
+        function openModal(date, fullContent) {
+            if (!modal || !modalDateEl || !modalBodyEl) return;
+            modalDateEl.innerHTML = escapeHtml(date);
+            modalBodyEl.innerHTML = escapeHtml(fullContent);
+            modal.style.display = 'flex';
+            isModalOpen = true;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            if (!modal) return;
+            modal.style.display = 'none';
+            isModalOpen = false;
+            document.body.style.overflow = '';
+        }
+
+        // 右上角关闭按钮
+        const closeBtn = document.getElementById('closeModalBtn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeModal);
+        }
+
+        // 点击遮罩关闭弹窗
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+
+        // 按ESC关闭弹窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isModalOpen) {
+                closeModal();
+            }
+        });
+
+        // 初始化渲染公告
+        renderAnnouncements();
+    </script>
+</body>
+</html>
